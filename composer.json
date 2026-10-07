@@ -1,0 +1,20 @@
+{
+  "name": "example/php-smarty-docker",
+  "description": "Plain PHP + MySQL + Smarty",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "php": ">=8.1",
+    "smarty/smarty": "^4.5",
+    "ext-pdo": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "optimize-autoloader": true
+  }
+}

@@ -93,3 +93,6 @@ fabric.properties
 *.iml
 out
 gen
+
+## Custom
+.env
