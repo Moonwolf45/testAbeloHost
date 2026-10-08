@@ -1,0 +1,13 @@
+.git
+.env
+.idea
+.vscode
+vendor/
+Makefile
+docker-compose.yml
+docker/nginx/
+
+smarty/cache/*
+smarty/templates_c/*
+!smarty/cache/.gitkeep
+!smarty/templates_c/.gitkeep

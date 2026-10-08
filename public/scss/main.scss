@@ -1,0 +1,556 @@
+// ============================================================
+// Стили простого блога (PHP + Smarty + MySQL)
+//
+// Исходник: public/scss/main.scss
+// Компилированный результат: public/css/main.css
+//
+// Перекомпиляция (локально, если установлен sass):
+//   npx sass public/scss/main.scss public/css/main.css --no-source-map
+//
+// ============================================================
+
+// ---------- Переменные ----------
+
+$color-bg: #f5f6f8;
+$color-surface: #ffffff;
+$color-text: #1f2430;
+$color-muted: #5a6472;
+$color-primary: #2f80ed;
+$color-primary-dark: #1c6fd6;
+$color-border: #e3e6eb;
+
+$radius-sm: 8px;
+$radius-md: 12px;
+
+$shadow-card: 0 4px 14px rgba(0, 0, 0, 0.06);
+$shadow-card-hover: 0 10px 24px rgba(0, 0, 0, 0.1);
+
+$font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+"Helvetica Neue", Arial, sans-serif;
+
+$grid-gap: 16px;
+$content-max-width: 1080px;
+
+// ---------- Миксины ----------
+
+@mixin container {
+  width: 100%;
+  max-width: $content-max-width;
+  margin: 0 auto;
+}
+
+// ---------- Базовый сброс ----------
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: $font-stack;
+  font-size: 16px;
+  line-height: 1.6;
+  color: $color-text;
+  background: $color-bg;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: $color-primary;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-primary-dark;
+  }
+}
+
+code {
+  font-size: 0.9em;
+  background: #eef1f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.muted {
+  color: $color-muted;
+}
+
+.container {
+  @include container;
+
+  padding: 0 20px;
+}
+
+// ---------- Шапка и подвал ----------
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: $color-surface;
+  border-bottom: 1px solid $color-border;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+
+.site-brand {
+  font-size: 20px;
+  font-weight: 700;
+  color: $color-text;
+
+  &:hover {
+    color: $color-primary;
+  }
+}
+
+.site-nav {
+  a {
+    font-size: 15px;
+    color: $color-text;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+}
+
+.main-content {
+  padding: 32px 20px 48px;
+  min-height: 60vh;
+}
+
+.site-footer {
+  background: $color-surface;
+  border-top: 1px solid $color-border;
+  padding: 20px 0;
+  font-size: 14px;
+  color: $color-muted;
+
+  p {
+    margin: 0;
+  }
+}
+
+// ---------- Кнопки ----------
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: $radius-sm;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &--primary {
+    background: $color-primary;
+    color: #fff;
+
+    &:hover {
+      background: $color-primary-dark;
+      color: #fff;
+    }
+  }
+}
+
+// ---------- Заголовок страницы ----------
+
+.page-title {
+  margin: 0 0 24px;
+  font-size: 28px;
+  line-height: 1.3;
+}
+
+// ---------- Хлебные крошки ----------
+
+.breadcrumbs {
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: $color-muted;
+
+  &__sep {
+    margin: 0 6px;
+  }
+
+  &__current {
+    color: $color-text;
+  }
+}
+
+// ---------- Главная: секция категории ----------
+
+.category-section {
+  margin-bottom: 40px;
+
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 22px;
+
+    a {
+      color: $color-text;
+
+      &:hover {
+        color: $color-primary;
+      }
+    }
+  }
+
+  &__description {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: $color-muted;
+  }
+}
+
+// ---------- Сетка постов (главная, «похожие») ----------
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $grid-gap;
+}
+
+// ---------- Карточка поста ----------
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  background: $color-surface;
+  border-radius: $radius-md;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow-card-hover;
+  }
+
+  &__image {
+    aspect-ratio: 800 / 420;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  &__title {
+    margin: 0 0 8px;
+    font-size: 17px;
+    line-height: 1.4;
+
+    a {
+      color: $color-text;
+
+      &:hover {
+        color: $color-primary;
+      }
+    }
+  }
+
+  &__description {
+    flex: 1;
+    margin: 0 0 12px;
+    font-size: 14px;
+    color: $color-muted;
+  }
+
+  &__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 13px;
+    color: $color-muted;
+  }
+}
+
+// ---------- Страница категории ----------
+
+.category-header {
+  margin-bottom: 20px;
+
+  .page-title {
+    margin-bottom: 8px;
+  }
+
+  &__description {
+    margin: 0 0 8px;
+    font-size: 15px;
+    color: $color-muted;
+  }
+}
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+
+  &__label {
+    color: $color-muted;
+  }
+
+  &__link {
+    padding: 6px 12px;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: $color-surface;
+    color: $color-text;
+    transition: border-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      border-color: $color-primary;
+      color: $color-primary;
+    }
+
+    &--active {
+      background: $color-primary;
+      border-color: $color-primary;
+      color: #fff;
+
+      &:hover {
+        border-color: $color-primary-dark;
+        color: #fff;
+      }
+    }
+  }
+}
+
+// ---------- Список статей ----------
+
+.posts-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $grid-gap;
+}
+
+// ---------- Пагинация ----------
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+
+  &__link {
+    padding: 6px 12px;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: $color-surface;
+    color: $color-text;
+
+    &:hover {
+      border-color: $color-primary;
+      color: $color-primary;
+    }
+
+    &--disabled {
+      background: transparent;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  &__page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    padding: 6px 10px;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: $color-surface;
+    color: $color-text;
+
+    &:hover {
+      border-color: $color-primary;
+      color: $color-primary;
+    }
+
+    &--current {
+      background: $color-primary;
+      border-color: $color-primary;
+      color: #fff;
+    }
+  }
+}
+
+// ---------- Страница статьи ----------
+
+.post {
+  &__header {
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    margin: 0 0 10px;
+    font-size: 32px;
+    line-height: 1.25;
+  }
+
+  &__description {
+    margin: 0 0 12px;
+    font-size: 17px;
+    color: $color-muted;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 14px;
+    color: $color-muted;
+  }
+
+  &__categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  &__image {
+    width: 100%;
+    border-radius: $radius-md;
+    box-shadow: $shadow-card;
+  }
+
+  &__body {
+    margin-top: 24px;
+    font-size: 16px;
+
+    p {
+      margin: 0 0 14px;
+    }
+  }
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #e7f0fd;
+  color: $color-primary;
+  font-size: 13px;
+
+  &:hover {
+    background: $color-primary;
+    color: #fff;
+  }
+}
+
+// ---------- Блок «Похожие статьи» ----------
+
+.similar {
+  margin-top: 48px;
+
+  &__title {
+    margin: 0 0 16px;
+    font-size: 22px;
+  }
+}
+
+// ---------- Страница 404 ----------
+
+.error-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 60px 0;
+  text-align: center;
+
+  &__code {
+    margin: 0;
+    font-size: 88px;
+    font-weight: 700;
+    line-height: 1;
+    color: $color-primary;
+  }
+
+  &__title {
+    margin: 16px 0 8px;
+    font-size: 24px;
+  }
+
+  &__text {
+    margin: 0 0 24px;
+    color: $color-muted;
+  }
+}
+
+// ---------- Адаптивность ----------
+
+@media (max-width: 900px) {
+  .posts-grid,
+  .posts-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .main-content {
+    padding: 24px 16px 40px;
+  }
+
+  .page-title {
+    font-size: 24px;
+  }
+
+  .posts-grid,
+  .posts-list {
+    grid-template-columns: 1fr;
+  }
+
+  .category-section__head {
+    flex-direction: column;
+  }
+
+  .post__title {
+    font-size: 26px;
+  }
+
+  .error-page__code {
+    font-size: 64px;
+  }
+}

@@ -1,5 +1,5 @@
 .PHONY: help build up down restart ps logs logs-app logs-db logs-web \
-        php-shell mysql-shell composer migrate clear-smarty clean rebuild \
+        php-shell mysql-shell composer migrate seed clear-smarty clean rebuild \
         pull exec-app exec-db
 
 DC := docker compose
@@ -44,17 +44,20 @@ logs-web: ## Логи Nginx
 php-shell: ## Зайти в shell PHP-контейнера
 	$(DC) exec app sh
 
-composer: ## Запустить composer внутри контейнера (пример: make composer ARGS=install)
-	$(DC) exec app composer $(ARGS)
+composer: ## Запустить composer внутри контейнера (пример: make composer c=install)
+	$(DC) exec app composer $(c)
 
 migrate: ## Запустить миграцию БД
 	$(DC) exec app php app/bin/migrate.php
+
+seed: ## Заполнить БД тестовыми данными (категории + статьи)
+	$(DC) exec app php app/bin/seed.php
 
 mysql-shell: ## Зайти в MySQL (пароль из .env)
 	$(DC) exec db mysql -u$${DB_USER:-app} -p$${DB_PASSWORD:-change_me} $${DB_NAME:-app}
 
 clear-smarty: ## Очистить кэш Smarty
-	$(DC) exec app sh -c "rm -f /var/www/html/app/cache/smarty/templates_c/* /var/www/html/app/cache/smarty/cache/*"
+	$(DC) exec app sh -c "rm -f /var/www/html/smarty/templates_c/* /var/www/html/smarty/cache/*"
 	@echo "Smarty cache cleaned."
 
 pull: ## Подтянуть последние образы

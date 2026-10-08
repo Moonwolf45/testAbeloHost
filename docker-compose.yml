@@ -37,7 +37,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-change_me}
     volumes:
       - ./app:/var/www/html/app
-      - smarty_cache:/var/www/html/app/cache/smarty
+      - ./public:/var/www/html/public:ro
+      - smarty_cache:/var/www/html/smarty/cache
     expose:
       - "9000"
     command: ["sh", "-c", "php app/bin/migrate.php && exec php-fpm"]
@@ -50,8 +51,9 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./app:/var/www/html/app:ro
+      - ./public:/var/www/html/public:ro
 
 volumes:
   db_data:
