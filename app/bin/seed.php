@@ -136,13 +136,11 @@ $posts = [
     ],
 ];
 
-$pdo->exec(
-    "SET FOREIGN_KEY_CHECKS = 0;
-     TRUNCATE TABLE categories;
-     TRUNCATE TABLE post_categories;
-     TRUNCATE TABLE posts;
-     SET FOREIGN_KEY_CHECKS = 1;"
-);
+$pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
+$pdo->exec('TRUNCATE TABLE categories');
+$pdo->exec('TRUNCATE TABLE post_categories');
+$pdo->exec('TRUNCATE TABLE posts');
+$pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
 
 try {
     $pdo->beginTransaction();

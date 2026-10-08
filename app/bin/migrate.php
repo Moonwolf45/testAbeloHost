@@ -21,10 +21,6 @@ try {
 
     $sql = (string)file_get_contents($schemaPath);
 
-    // Разбиваем скрипт на отдельные инструкции по символу ";".
-    // PDO::exec() не выполняет несколько инструкций за один вызов,
-    // поэтому применяем их по одной. Схема состоит только из
-    // CREATE TABLE IF NOT EXISTS, поэтому разбивка по ";" безопасна.
     $statements = array_values(
         array_filter(
             array_map('trim', explode(';', $sql)),
