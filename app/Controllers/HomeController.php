@@ -23,8 +23,6 @@ final class HomeController extends Controller
             self::POSTS_PER_CATEGORY
         );
 
-        // Инициализируем пустой массив для категорий без постов,
-        // чтобы в шаблонах не было обращений к несуществующим ключам.
         $postsByCategory = [];
         foreach ($categories as $category) {
             $postsByCategory[(int) $category['id']] = $latest[(int) $category['id']] ?? [];

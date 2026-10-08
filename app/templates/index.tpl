@@ -1,4 +1,4 @@
-{extend "layout.tpl"}
+{extends "layout.tpl"}
 
 {block name="content"}
     <h1 class="page-title">Блог</h1>
