@@ -137,13 +137,16 @@ final class PostRepository
              FROM posts p
              INNER JOIN post_categories pc ON pc.post_id = p.id
              WHERE pc.category_id IN (
-                 SELECT category_id FROM post_categories WHERE post_id = :post_id
+                 SELECT category_id FROM post_categories WHERE post_id = :post_id_1
              )
-               AND p.id <> :post_id
+               AND p.id <> :post_id_2
              ORDER BY p.published_at DESC, p.id DESC
              LIMIT ' . max(1, $limit)
         );
-        $stmt->execute(['post_id' => $postId]);
+        $stmt->execute([
+            'post_id_1' => $postId,
+            'post_id_2' => $postId
+        ]);
 
         return $stmt->fetchAll();
     }

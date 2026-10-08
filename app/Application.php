@@ -35,7 +35,15 @@ final class Application
             [$controllerClass, $action, $params] = $route;
 
             $controller = new $controllerClass($db, $config);
-            $controller->{$action}($smarty, ...$params);
+
+            // Фильтруем массив: оставляем ТОЛЬКО строковые ключи, удаляя числовые дубликаты
+            $params = array_filter($params, 'is_string', ARRAY_FILTER_USE_KEY);
+
+            // Добавляем smarty как именованный аргумент
+            $params['smarty'] = $smarty;
+
+            // Безопасно вызываем экшен контроллера
+            $controller->{$action}(...$params);
         } catch (NotFoundException $e) {
             $this->renderNotFound($smarty, $e);
         } catch (Throwable $e) {
